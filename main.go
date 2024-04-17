@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"strconv"
 )
 
 var hasteURL *string
@@ -14,10 +16,33 @@ const version = "0.1"
 
 func main() {
 
+	// Set some defaults
+	defaultListenIP := os.Getenv("LISTEN_IP")
+	if defaultListenIP == "" {
+		defaultListenIP = "0.0.0.0"
+	}
+
+	var defaultListenPort int
+	var err error
+	defaultListenPortStr := os.Getenv("LISTEN_PORT")
+	if defaultListenPortStr == "" {
+		defaultListenPort = 99
+	} else {
+		defaultListenPort, err = strconv.Atoi(defaultListenPortStr)
+		if err != nil {
+			log.Fatal("Error converting listen port to integer:", err.Error())
+		}
+	}
+
+	defaultHasteURL := os.Getenv("HASTEBIN_URL")
+	if defaultHasteURL == "" {
+		defaultHasteURL = "https://haste.egglabs.net"
+	}
+
 	// Define command-line options
-	listenIP := flag.String("ip", "0.0.0.0", "the IP address to listen on")
-	listenPort := flag.Int("port", 99, "the port number to listen on")
-	hasteURL = flag.String("hasteurl", "https://haste.egglabs.net", "the URL of the Hastebin server to use")
+	listenIP := flag.String("ip", defaultListenIP, "the IP address to listen on")
+	listenPort := flag.Int("port", defaultListenPort, "the port to listen on")
+	hasteURL = flag.String("hasteurl", defaultHasteURL, "the URL of the Hastebin server to use")
 
 	flag.Parse()
 
