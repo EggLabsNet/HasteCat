@@ -54,7 +54,7 @@ func handleConnection(conn net.Conn) {
 	}
 
 	// Handle the received text and post it to hastebin
-	h, err := hastePost(data)
+	h, err := hastePost(data, conn.RemoteAddr().String())
 	if err != nil {
 		conn.Write([]byte("Error posting to Hastebin\n"))
 		log.Printf("Error posting to Hastebin: %s for client %s\n", err.Error(), conn.RemoteAddr().String())

@@ -14,7 +14,7 @@ type hasteResponse struct {
 	Key string `json:"key"`
 }
 
-func hastePost(data string) (*hasteResponse, error) {
+func hastePost(data string, ip string) (*hasteResponse, error) {
 	r, err := http.NewRequest("POST", fmt.Sprintf("%s/documents", *hasteURL), bytes.NewBuffer([]byte(data)))
 	if err != nil {
 		log.Println("Error creating request:", err.Error())
@@ -25,6 +25,7 @@ func hastePost(data string) (*hasteResponse, error) {
 	r.Header.Set("Content-Type", "text/plain")
 	r.Header.Set("Accept", "application/json")
 	r.Header.Set("User-Agent", "EggLabs HasteCat v"+version)
+	r.Header.Set("X-Forwarded-For", ip)
 
 	// Send the request
 	resp, err := client.Do(r)
