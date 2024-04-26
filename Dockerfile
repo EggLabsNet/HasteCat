@@ -15,7 +15,7 @@ RUN go build -o hastecat
 # Start a new build stage
 FROM scratch
 
-# Copy in HashCat binary
+# Copy in HasteCat binary
 COPY --from=builder src/hastecat /hastecat
 
 # Copy in CA certificates
