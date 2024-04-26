@@ -35,10 +35,9 @@ func handleConnection(conn net.Conn) {
 			}
 
 			// Some other error occurred
-			if err != nil {
-				log.Println("Error reading:", err.Error())
-				return
-			}
+			log.Println("Error reading:", err.Error())
+			return
+
 		}
 
 		// Convert the received data to string
